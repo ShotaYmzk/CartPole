@@ -635,7 +635,7 @@ export default function Home() {
         <section className="grid gap-10 rounded-3xl bg-white/60 p-8 shadow-xl ring-1 ring-slate-200 backdrop-blur-md md:grid-cols-[2fr_1fr]">
           <div className="flex flex-col gap-6">
             <CartPoleCanvas state={state} />
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <button
                 onClick={toggleRun}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-2 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-700"
@@ -678,6 +678,48 @@ export default function Home() {
                   ネットワークリセット
                 </button>
               )}
+            </div>
+            <div className="rounded-2xl border border-white/40 bg-gradient-to-br from-sky-500/20 via-indigo-500/20 to-blue-600/40 p-6 text-sm text-slate-600 shadow-sm">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                仕組み
+              </h2>
+              <div className="mt-3 space-y-4">
+                <p>
+                  CartPole環境はカートに左右の力を加えてポールのバランスを取ります。
+                  ヒューリスティックコントローラーはポールの角度と速度を使って
+                  どちらの方向に押すかを決定します。
+                </p>
+                
+                <div className="space-y-3 text-xs">
+                  <div className="rounded-md bg-white/50 p-3">
+                    <h4 className="font-semibold text-slate-700 mb-2">🧮 物理の数式</h4>
+                    <div className="space-y-1 text-slate-600 font-mono">
+                      <p>カートの加速度: a_cart = (F - m_pole × L × θ̈ × cos(θ)) / m_total</p>
+                      <p>ポールの角加速度: θ̈ = (g × sin(θ) - a_cart × cos(θ)) / L</p>
+                      <p>重力: g = 9.8 m/s², カート質量: 1kg, ポール質量: 0.1kg</p>
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-md bg-white/50 p-3">
+                    <h4 className="font-semibold text-slate-700 mb-2">🎯 制御方法の比較</h4>
+                    <div className="space-y-1 text-slate-600">
+                      <p><strong>ヒューリスティック：</strong>if (θ + 0.25×θ̇ + 0.05×ẋ &gt; 0) then 右 else 左</p>
+                      <p><strong>ニューラル：</strong>NN(x, ẋ, θ, θ̇) → [P(左), P(右)] → 確率的選択</p>
+                      <p><strong>ランダム：</strong>50%の確率で左右をランダム選択</p>
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-md bg-white/50 p-3">
+                    <h4 className="font-semibold text-slate-700 mb-2">📈 学習アルゴリズム（REINFORCE）</h4>
+                    <div className="space-y-1 text-slate-600">
+                      <p>1. エピソード実行：状態観察 → 行動選択 → 報酬獲得</p>
+                      <p>2. 収益計算：R_t = Σ(γ^k × r_&#123;t+k&#125;) (γ=0.99)</p>
+                      <p>3. 勾配更新：∇θ = Σ(R_t × ∇log π(a_t|s_t))</p>
+                      <p>4. 重み更新：θ ← θ + α × ∇θ (α=0.02)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -748,48 +790,6 @@ export default function Home() {
                     <p><strong>隠れ層（8ノード）：</strong>入力を組み合わせて特徴を抽出</p>
                     <p><strong>出力層（2ノード）：</strong>左右の行動確率（ソフトマックス関数）</p>
                     <p><strong>学習：</strong>REINFORCE法で方策勾配を計算し重みを更新</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-white/40 bg-gradient-to-br from-sky-500/20 via-indigo-500/20 to-blue-600/40 p-6 text-sm text-slate-600 shadow-sm">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                仕組み
-              </h2>
-              <div className="mt-3 space-y-4">
-                <p>
-                  CartPole環境はカートに左右の力を加えてポールのバランスを取ります。
-                  ヒューリスティックコントローラーはポールの角度と速度を使って
-                  どちらの方向に押すかを決定します。
-                </p>
-                
-                <div className="space-y-3 text-xs">
-                  <div className="rounded-md bg-white/50 p-3">
-                    <h4 className="font-semibold text-slate-700 mb-2">🧮 物理の数式</h4>
-                    <div className="space-y-1 text-slate-600 font-mono">
-                      <p>カートの加速度: a_cart = (F - m_pole × L × θ̈ × cos(θ)) / m_total</p>
-                      <p>ポールの角加速度: θ̈ = (g × sin(θ) - a_cart × cos(θ)) / L</p>
-                      <p>重力: g = 9.8 m/s², カート質量: 1kg, ポール質量: 0.1kg</p>
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-md bg-white/50 p-3">
-                    <h4 className="font-semibold text-slate-700 mb-2">🎯 制御方法の比較</h4>
-                    <div className="space-y-1 text-slate-600">
-                      <p><strong>ヒューリスティック：</strong>if (θ + 0.25×θ̇ + 0.05×ẋ &gt; 0) then 右 else 左</p>
-                      <p><strong>ニューラル：</strong>NN(x, ẋ, θ, θ̇) → [P(左), P(右)] → 確率的選択</p>
-                      <p><strong>ランダム：</strong>50%の確率で左右をランダム選択</p>
-                    </div>
-                  </div>
-                  
-                  <div className="rounded-md bg-white/50 p-3">
-                    <h4 className="font-semibold text-slate-700 mb-2">📈 学習アルゴリズム（REINFORCE）</h4>
-                    <div className="space-y-1 text-slate-600">
-                      <p>1. エピソード実行：状態観察 → 行動選択 → 報酬獲得</p>
-                      <p>2. 収益計算：R_t = Σ(γ^k × r_&#123;t+k&#125;) (γ=0.99)</p>
-                      <p>3. 勾配更新：∇θ = Σ(R_t × ∇log π(a_t|s_t))</p>
-                      <p>4. 重み更新：θ ← θ + α × ∇θ (α=0.02)</p>
-                    </div>
                   </div>
                 </div>
               </div>
