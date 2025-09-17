@@ -786,7 +786,7 @@ export default function Home() {
                     <h4 className="font-semibold text-slate-700 mb-2">📈 学習アルゴリズム（REINFORCE）</h4>
                     <div className="space-y-1 text-slate-600">
                       <p>1. エピソード実行：状態観察 → 行動選択 → 報酬獲得</p>
-                      <p>2. 収益計算：R_t = Σ(γ^k × r_{{t+k}}) (γ=0.99)</p>
+                      <p>2. 収益計算：R_t = Σ(γ^k × r_&#123;t+k&#125;) (γ=0.99)</p>
                       <p>3. 勾配更新：∇θ = Σ(R_t × ∇log π(a_t|s_t))</p>
                       <p>4. 重み更新：θ ← θ + α × ∇θ (α=0.02)</p>
                     </div>
